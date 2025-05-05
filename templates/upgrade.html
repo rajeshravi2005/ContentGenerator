@@ -1,0 +1,49 @@
+<!-- templates/upgrade.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade to Pro - AI Content Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Upgrade to Pro</h1>
+        
+        <div class="pricing-table">
+            <div class="price-card free">
+                <h2>Free Plan</h2>
+                <p class="price">$0/month</p>
+                <ul class="features">
+                    <li>5 generations per day</li>
+                    <li>60-second cooldown</li>
+                    <li>Up to 800 words</li>
+                    <li>Basic AI models only</li>
+                    <li>Basic support</li>
+                </ul>
+                <p class="current-plan">Your Current Plan</p>
+            </div>
+            
+            <div class="price-card pro">
+                <h2>Pro Plan</h2>
+                <p class="price">$9.99/month</p>
+                <ul class="features">
+                    <li>Unlimited generations</li>
+                    <li>No cooldown</li>
+                    <li>Up to 2000 words</li>
+                    <li>Access to premium AI models</li>
+                    <li>Priority support</li>
+                </ul>
+                <form method="POST" action="/process_upgrade">
+                    <button type="submit" class="upgrade-btn">Upgrade Now</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="/">← Back to Generator</a>
+        </div>
+    </div>
+</body>
+</html>

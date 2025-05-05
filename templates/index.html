@@ -1,0 +1,180 @@
+features. Here's a comprehensive solution with improvements:
+
+
+Enhanced AI Content Generator
+Code 
+
+Enhanced Generator Module
+Code 
+
+Enhanced HTML Templates
+Code 
+
+Enhanced CSS Styles
+Code 
+
+
+
+
+continue
+
+Edit
+Here's the continuation of the enhanced CSS styles:
+
+
+Enhanced CSS Styles (Continued)
+Code 
+
+Project Structure and Setup Instructions
+Document 
+Now you have a complete enhanced version of your AI Content Generator with pro features! This implementation includes:
+
+User Authentication System - Login/register functionality with pro/free tiers
+Enhanced Content Generation - Multiple AI models, customizable tone, and word count
+Pro Features:
+Unlimited generations (vs. 5/day limit for free users)
+No cooldown between generations
+Higher word count limits (2000 vs. 800)
+Access to premium AI models
+Improved UI/UX:
+Modern, responsive design
+Content history tracking
+Download functionality
+Upgrade path for free users
+The system uses in-memory user storage (could be replaced with a database later) and includes demo users (username: user/admin with passwords user123/admin123). I've provided thorough styling with a proper responsive layout, including a mobile-friendly design.
+
+To run the project, just follow the setup instructions in the markdown document. You can easily extend this project with more features like database integration, real payment processing, or additional content formats.
+
+
+
+
+
+
+
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Content Generator</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    {% if session.is_pro %}
+                        <li><span class="pro-badge">PRO</span></li>
+                    {% else %}
+                        <li><a href="/upgrade" class="upgrade-btn">Upgrade to Pro</a></li>
+                    {% endif %}
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class="main">
+            <div class="generator-panel">
+                <h2>Generate New Content</h2>
+                
+                {% if error %}
+                <div class="error-message">{{ error }}</div>
+                {% endif %}
+                
+                {% for message in get_flashed_messages() %}
+                <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+                
+                <form method="POST" class="generation-form">
+                    <div class="form-group">
+                        <label for="topic">Topic:</label>
+                        <input type="text" id="topic" name="topic" placeholder="Enter a topic..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="word_count">Word Count:</label>
+                        <input type="range" id="word_count" name="word_count" min="200" max="{{ 2000 if session.is_pro else 800 }}" step="100" value="500">
+                        <span id="word_count_display">500 words</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tone">Tone:</label>
+                        <select id="tone" name="tone">
+                            <option value="informative">Informative</option>
+                            <option value="persuasive">Persuasive</option>
+                            <option value="creative">Creative</option>
+                            <option value="technical">Technical</option>
+                            <option value="casual">Casual</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="model">AI Model:</label>
+                        <select id="model" name="model">
+                            {% for model in models %}
+                                {% if model.free or session.is_pro %}
+                                    <option value="{{ model.id }}">{{ model.name }}</option>
+                                {% else %}
+                                    <option value="{{ model.id }}" disabled>{{ model.name }} (Pro Only)</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="generate-btn">Generate Content</button>
+                </form>
+            </div>
+            
+            {% if content %}
+            <div class="result-panel">
+                <div class="result-header">
+                    <h2>Generated Content:</h2>
+                    <a href="/download" class="download-btn">Download</a>
+                </div>
+                <textarea rows="20" readonly>{{ content }}</textarea>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if history %}
+        <div class="history-panel">
+            <h2>Generation History</h2>
+            <div class="history-list">
+                {% for item in history %}
+                <div class="history-item">
+                    <h3>{{ item.topic }}</h3>
+                    <p>{{ item.preview }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <footer>
+            <p>Advanced AI Content Generator - Created with Flask and OpenRouter</p>
+            {% if not session.is_pro %}
+            <div class="pro-promo">
+                <p>Upgrade to Pro for unlimited generations, no cooldown, and premium AI models!</p>
+                <a href="/upgrade" class="upgrade-btn">Upgrade Now</a>
+            </div>
+            {% endif %}
+        </footer>
+    </div>
+    
+    <script>
+        // Update word count display
+        const wordCountSlider = document.getElementById('word_count');
+        const wordCountDisplay = document.getElementById('word_count_display');
+        
+        if (wordCountSlider) {
+            wordCountSlider.addEventListener('input', function() {
+                wordCountDisplay.textContent = this.value + ' words';
+            });
+        }
+    </script>
+</body>
+</html>
